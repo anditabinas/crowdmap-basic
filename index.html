@@ -2,7 +2,7 @@
 <!--Based on https://github.com/mjfoster83/web-map-workshop/blob/master/7_advancedMapping_CartoDB/index-completed.html-->
 <html>
   <head>
-    <title>Leaflet to Carto - Point Collection Tool Beta</title>
+    <title>Mental Health aWHEREness: Point Collection Tool</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css"
   integrity="sha384-99ZJFcuBCh9c/V/+8YwDX/TUGG8JWMG+gKFJWzk0BZP3IoDMN+pLGd3/H0yjg4oa"
   crossorigin=""/>
@@ -24,14 +24,14 @@
       </div>
     </div>
 
-    <div id="dialog" title="Tell us About this Drawing">     
+    <div id="dialog" title="Tell us About this MH Service/Facility">     
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
-            <li><label for="username">Your Name</label></li>
-            <li><input type="text" name="username" id="username" placeholder="Enter your name" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="description">About this</label></li>
-            <li><input type="text" name="description" id="description" placeholder="Description for this point" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="placename">Name</label></li>
+            <li><input type="text" name="placename" id="name" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="address">Address</label></li>
+            <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -49,15 +49,15 @@
 
 		//TODO: Change to your username, insert function on Carto, and Carto tablename
 		var config = {
-			cartoUsername : "raphaeld",
+			cartoUsername : "anditabinas",
 			cartoInsertFunction : "insert_crowd_mapping_data",
-			cartoTablename : "crowdmap_basic",
-			mapcenter: [43.6525, -79.381667],
+			cartoTablename : "mhloc",
+			mapcenter: [12.51166, 122.08007],
 			drawOptions: {
 				draw : {
-					polygon : true,
-					polyline : true,
-					rectangle : true,
+					polygon : false,
+					polyline : false,
+					rectangle : false,
 					/*Circles aren't supported by the GeoJSON spec, so won't get sent to the database properly. 
 					*http://stackoverflow.com/a/16944309/4047679
 					*/
@@ -77,11 +77,11 @@
 		var cartoData = null;
 
 		// Write SQL Selection Query to be Used on Carto Table
-		var sqlQuery = "SELECT the_geom, description, name FROM " + config.cartoTablename;
+		var sqlQuery = "SELECT the_geom, address, name FROM " + config.cartoTablename;
 
 
 		// Create Leaflet map object
-		var map = L.map('map', { center: config.mapcenter, zoom: 13});
+		var map = L.map('map', { center: config.mapcenter, zoom: 6});
 		// Add Tile Layer basemap
 		// Find your own at https://leaflet-extras.github.io/leaflet-providers/preview/
 		var CartoDB_Positron = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -99,7 +99,7 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('' + feature.properties.description + '<br>Submitted by ' + feature.properties.name + '');
+						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.address + '');
 					}
 				}).addTo(map);
 			});
@@ -162,8 +162,8 @@
 		});
 
 		function setData() {
-			var enteredUsername = "'" + username.value + "'",
-				enteredDescription = "'" + description.value + "'";
+			var enteredPlacename = "'" + placename.value + "'",
+				enteredAddress = "'" + address.value + "'";
 			drawnItems.eachLayer(function (layer) {
 			//Convert the drawing to a GeoJSON to pass to the Carto sql database
 				var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",
@@ -171,8 +171,8 @@
 				  //Construct the SQL query to insert data from the three parameters: the drawing, the input username, and the input description of the drawn shape
 					sql = "SELECT " + config.cartoInsertFunction + "(";
 				sql += drawing;
-				sql += "," + enteredDescription;
-				sql += "," + enteredUsername;
+				sql += "," + enteredAddress;
+				sql += "," + enteredPlacename;
 				sql += ");";
 
 				console.log(drawing);
@@ -198,8 +198,8 @@
 				* requerying the database (see the refreshLayer() function for an alternate way of doing this) 
 				*/
 				var newData = layer.toGeoJSON();
-				  newData.properties.description = description.value;
-				  newData.properties.name = username.value;
+				  newData.properties.address = address.value;
+				  newData.properties.name = placename.value;
 
 				cartoData.addData(newData);
 
