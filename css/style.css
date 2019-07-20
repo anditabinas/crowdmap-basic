@@ -23,13 +23,13 @@ h1 {
 }
 
 #wrapper {
-  width: 750px;
+  width: 95%;
 }
 
 #map {
-  width: 750px;
+  width: 95%;
   margin: 0 auto;
-  height: 375px;
+  height: 800px;
 }
 
 #controls {
@@ -40,10 +40,10 @@ h1 {
 
 #form {
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 10px;
   text-align: left;
-  line-height: 16px;
-  width:375px;
+  line-height: 12px;
+  width:400px;
   float: left;
 }
 
@@ -54,7 +54,7 @@ h1 {
 
 #credits p {
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 8px;
   text-align: right;
-  line-height: 16px;
+  line-height: 10px;
 }
