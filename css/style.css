@@ -30,7 +30,7 @@ h1 {
 #map {
   width: 98%;
   margin: 0 auto;
-  height: 790px;
+  height: 780px;
 }
 
 #controls {
@@ -54,7 +54,7 @@ h1 {
 }
 
 #credits p {
-  margin-top: 3px;
+  margin-top: 1px;
   font-size: 8px;
   text-align: right;
   line-height: 10px;
