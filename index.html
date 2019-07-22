@@ -30,10 +30,10 @@
           <ul style="list-style-type: none; padding-left: 0px">
             <li><label for="fname">Name</label></li>
             <li><input type="text" name="fname" id="fname" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="doctor">Doctor</label></li>
+            <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>		  
             <li><label for="address">Address</label></li>
             <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="doctor">Doctor</label></li>
-            <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -101,7 +101,7 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.address +  '<br> ' +feature.properties.doctor + '');
+						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' +feature.properties.address + '');
 					}
 				}).addTo(map);
 			});
