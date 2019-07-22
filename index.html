@@ -32,6 +32,8 @@
             <li><input type="text" name="fname" id="fname" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
             <li><label for="address">Address</label></li>
             <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="doctor">Doctor</label></li>
+            <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -163,7 +165,8 @@
 
 		function setData() {
 			var enteredFname = "'" + fname.value + "'",
-				enteredAddress = "'" + address.value + "'";
+				enteredAddress = "'" + address.value + "'",
+				enteredDoctor = "'" + doctor.value + "'";			
 			drawnItems.eachLayer(function (layer) {
 			//Convert the drawing to a GeoJSON to pass to the Carto sql database
 				var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",
@@ -173,6 +176,7 @@
 				sql += drawing;
 				sql += "," + enteredAddress;
 				sql += "," + enteredFname;
+				sql += "," + enteredDoctor;				
 				sql += ");";
 
 				console.log(drawing);
@@ -200,6 +204,7 @@
 				var newData = layer.toGeoJSON();
 				  newData.properties.address = address.value;
 				  newData.properties.name = fname.value;
+				  newData.properties.doctor = doctor.value;				
 
 				cartoData.addData(newData);
 
