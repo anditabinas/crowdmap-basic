@@ -111,7 +111,9 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('' '<b>Name:</b>' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '<br> ' + feature.properties.notes + '');
+						layer.bindPopup('<h3>' + "Name: " + feature.properties.name + '</h3><p>' + '<b>Doctor: </b>' + feature.properties.doctor + '</p><p>' + '<b>Address: </b>' + feature.properties.address + '</p><p>' + '<b>Contact Details: </b>' + feature.properties.contactnum + '</p><p>' + '<b>Fees: </b>' + feature.properties.fee + '</p><p>' + '<b>Website: </b>' + feature.properties.website + '</p><p>' + '<b>Opening Hours: </b>' + feature.properties.hours + '</p><p>' + '<b>Notes/Recommendations: </b>' + feature.properties.notes + '</p>');
+						
+						//('' '<b>Name:</b>' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '<br> ' + feature.properties.notes + '');
 					}
 				}).addTo(map);
 			});
