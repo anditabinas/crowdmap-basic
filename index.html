@@ -34,6 +34,8 @@
             <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>		  
             <li><label for="address">Address</label></li>
             <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="contactnum">Contact Number</label></li>
+            <li><input type="text" name="contactnum" id="contactnum" placeholder="Telephone or Mobile number to call" class="text ui-widget-content ui-corner-all"></li>		  
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -79,7 +81,7 @@
 		var cartoData = null;
 
 		// Write SQL Selection Query to be Used on Carto Table
-		var sqlQuery = "SELECT the_geom, address, name FROM " + config.cartoTablename;
+		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum FROM " + config.cartoTablename;
 
 
 		// Create Leaflet map object
@@ -101,7 +103,7 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' +feature.properties.address + '');
+						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '');
 					}
 				}).addTo(map);
 			});
@@ -166,7 +168,8 @@
 		function setData() {
 			var enteredFname = "'" + fname.value + "'",
 				enteredAddress = "'" + address.value + "'",
-				enteredDoctor = "'" + doctor.value + "'";			
+				enteredDoctor = "'" + doctor.value + "'",
+				enteredContactnum = "'" + contactnum.value + "'";			
 			drawnItems.eachLayer(function (layer) {
 			//Convert the drawing to a GeoJSON to pass to the Carto sql database
 				var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",
@@ -176,7 +179,8 @@
 				sql += drawing;
 				sql += "," + enteredAddress;
 				sql += "," + enteredFname;
-				sql += "," + enteredDoctor;				
+				sql += "," + enteredDoctor;
+				sql += "," + enteredContactnum;				
 				sql += ");";
 
 				console.log(drawing);
@@ -204,7 +208,8 @@
 				var newData = layer.toGeoJSON();
 				  newData.properties.address = address.value;
 				  newData.properties.name = fname.value;
-				  newData.properties.doctor = doctor.value;				
+				  newData.properties.doctor = doctor.value;
+				  newData.properties.contactnum = contactnum.value;				
 
 				cartoData.addData(newData);
 
