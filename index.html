@@ -39,7 +39,9 @@
             <li><label for="fee">Initial and Succeeding Fees</label></li>
             <li><input type="text" name="fee" id="fee" placeholder="Separate by comma if succeeding fees are diff. from initial" class="text ui-widget-content ui-corner-all"></li>
             <li><label for="website">Website or Other Details</label></li>
-            <li><input type="text" name="website" id="website" placeholder="Website, Social Media, other details" class="text ui-widget-content ui-corner-all"></li>		  
+            <li><input type="text" name="website" id="website" placeholder="Website, Social Media, other details" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="hours">Opening Hours</label></li>
+            <li><input type="text" name="hours" id="hours" placeholder="Opening Hours" class="text ui-widget-content ui-corner-all"></li>		  
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
@@ -85,7 +87,7 @@
 		var cartoData = null;
 
 		// Write SQL Selection Query to be Used on Carto Table
-		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website FROM " + config.cartoTablename;
+		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website, hours FROM " + config.cartoTablename;
 
 
 		// Create Leaflet map object
@@ -107,7 +109,7 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '');
+						layer.bindPopup('' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '');
 					}
 				}).addTo(map);
 			});
@@ -175,7 +177,8 @@
 				enteredDoctor = "'" + doctor.value + "'",
 				enteredContactnum = "'" + contactnum.value + "'",
 				enteredFee = "'" + fee.value + "'",
-				enteredWebsite = "'" + website.value + "'";				
+				enteredWebsite = "'" + website.value + "'",
+				enteredHours = "'" + hours.value + "'";			
 			drawnItems.eachLayer(function (layer) {
 			//Convert the drawing to a GeoJSON to pass to the Carto sql database
 				var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",
@@ -188,7 +191,8 @@
 				sql += "," + enteredDoctor;
 				sql += "," + enteredContactnum;
 				sql += "," + enteredFee;
-				sql += "," + enteredWebsite;				
+				sql += "," + enteredWebsite;
+				sql += "," + enteredHours;				
 				sql += ");";
 
 				console.log(drawing);
@@ -219,7 +223,8 @@
 				  newData.properties.doctor = doctor.value;
 				  newData.properties.contactnum = contactnum.value;
 				  newData.properties.fee = fee.value;
-				  newData.properties.website = website.value;				
+				  newData.properties.website = website.value;
+				  newData.properties.hours = hours.value;					
 
 				cartoData.addData(newData);
 
