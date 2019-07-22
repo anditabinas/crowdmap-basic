@@ -103,21 +103,7 @@
 			maxZoom: 19
 		});
 
-		CartoDB_Positron.addTo(map);
-	    
-	    
-	    	var markers = L.markerClusterGroup();
-		
-		for (var i = 0; i < addressPoints.length; i++) {
-			var a = addressPoints[i];
-			var title = a[2];
-			var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
-			marker.bindPopup(title);
-			markers.addLayer(marker);
-		}
-
-		map.addLayer(markers);
-	    
+		CartoDB_Positron.addTo(map);	    
 	    
 
 		//Fetches
