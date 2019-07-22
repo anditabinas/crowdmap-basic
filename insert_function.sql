@@ -1,4 +1,4 @@
-DROP FUNCTION IF EXISTS insert_crowd_mapping_data(text,text,text,text,text,text);
+DROP FUNCTION IF EXISTS insert_crowd_mapping_data(text,text,text,text,text,text,text);
 --Assumes only one value being inserted
 
 CREATE OR REPLACE FUNCTION insert_crowd_mapping_data (
@@ -7,7 +7,8 @@ CREATE OR REPLACE FUNCTION insert_crowd_mapping_data (
     _name TEXT,
     _doctor TEXT,
     _contactnum TEXT,
-    _fee TEXT)    
+    _fee TEXT, 
+    _website TEXT)     
 --Has to return something in order to be used in a "SELECT" statement
 RETURNS integer
 AS $$
@@ -21,9 +22,9 @@ BEGIN
 	
 
 	--Executes the insert given the supplied geometry, description, and username, while protecting against SQL injection.
-    EXECUTE ' INSERT INTO '||quote_ident(_the_table)||' (the_geom, address, name, doctor, contactnum, fee)
-            VALUES ($1, $2, $3, $4, $5, $6)
-            ' USING _the_geom, _address, _name, _doctor, _contactnum, _fee;
+    EXECUTE ' INSERT INTO '||quote_ident(_the_table)||' (the_geom, address, name, doctor, contactnum, fee, website)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            ' USING _the_geom, _address, _name, _doctor, _contactnum, _fee, _website;
             
     RETURN 1;
 END;
@@ -31,4 +32,4 @@ $$
 LANGUAGE plpgsql SECURITY DEFINER ;
 
 --Grant access to the public user
-GRANT EXECUTE ON FUNCTION insert_crowd_mapping_data( text, text, text, text, text, text) TO publicuser;
+GRANT EXECUTE ON FUNCTION insert_crowd_mapping_data( text, text, text, text, text, text, text) TO publicuser;
