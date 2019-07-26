@@ -77,7 +77,7 @@
 		// Create Global Variable to hold Carto points
 		var cartoData = null;
 		// Write SQL Selection Query to be Used on Carto Table
-		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website, hours, notes FROM " + config.cartoTablename;
+		var sqlQuery = "SELECT the_geom, name, notes FROM " + config.cartoTablename;
 		// Create Leaflet map object
 		var map = L.map('map', { center: config.mapcenter, zoom: 6});
 		// Add Tile Layer basemap
