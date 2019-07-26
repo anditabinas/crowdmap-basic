@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.css"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.css" rel="stylesheet">
 	  
+
   </head>
   <body>
     <div id="wrapper">
@@ -47,6 +49,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="https://rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.js"></script> 
+
     <script>
 		//TODO: Change to your username, insert function on Carto, and Carto tablename
 		var config = {
@@ -87,6 +91,11 @@
 		});
 		Mapbox.addTo(map);	    
 	    
+
+                var osmGeocoder = new L.Control.OSMGeocoder({position: 'topleft'}); //Adds Search toolbar; OSMGeocoder       
+	          map.addControl(osmGeocoder);
+
+
 		//Fetches
 		var getData = "https://" + config.cartoUsername + ".carto.com/api/v2/sql?format=GeoJSON&q=" + sqlQuery;
 		function getGeoJSON() {
