@@ -3,9 +3,9 @@
 <html>
   <head>
     <title>Mental Health aWHEREness: Point Collection Tool</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css"
+  integrity="sha384-99ZJFcuBCh9c/V/+8YwDX/TUGG8JWMG+gKFJWzk0BZP3IoDMN+pLGd3/H0yjg4oa"
+  crossorigin=""/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.css"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -56,9 +56,6 @@
       crossorigin=""></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-   crossorigin=""></script>
     
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
@@ -66,7 +63,7 @@
 		var config = {
 			cartoUsername : "anditabinas",
 			cartoInsertFunction : "insert_crowd_mapping_data",
-			cartoTablename : "mhstories",
+			cartoTablename : "mhloc",
 			mapcenter: [12.51166, 122.08007],
 			drawOptions: {
 				draw : {
@@ -94,12 +91,12 @@
 		var map = L.map('map', { center: config.mapcenter, zoom: 6});
 		// Add Tile Layer basemap
 		// Find your own at https://leaflet-extras.github.io/leaflet-providers/preview/
-		var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/cjy8p77s50mq91cmxkhhcw2uw/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
-	              attribution: '&copy; <a href="mapbox://styles/anditabinas/cjy8p77s50mq91cmxkhhcw2uw">Mapbox<\/a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<\/a> contributors',
+		var CartoDB_Positron = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
 			subdomains: 'abcd',
 			maxZoom: 19
 		});
-		Mapbox.addTo(map);	    
+		CartoDB_Positron.addTo(map);	    
 	    
 		//Fetches
 		var getData = "https://" + config.cartoUsername + ".carto.com/api/v2/sql?format=GeoJSON&q=" + sqlQuery;
