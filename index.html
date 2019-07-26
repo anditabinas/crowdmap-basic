@@ -2,7 +2,7 @@
 <!--Based on https://github.com/mjfoster83/web-map-workshop/blob/master/7_advancedMapping_CartoDB/index-completed.html-->
 <html>
   <head>
-    <title>Mental Health aWHEREness: Point Collection Tool</title>
+    <title>Mental Health aWHEREness Stories</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css"
   integrity="sha384-99ZJFcuBCh9c/V/+8YwDX/TUGG8JWMG+gKFJWzk0BZP3IoDMN+pLGd3/H0yjg4oa"
   crossorigin=""/>
@@ -14,25 +14,25 @@
   <body>
     <div id="wrapper">
       <div id="header">
-        <h1>Mental Health aWHEREness</h1>
+        <h1>Mapping Emotions</h1>
       </div>
       <div id="map"></div>
       <div id="controls">
         <p>Click points for more information, or add your own.</br></p>
-        <input type="button" onclick="startEdits()" value="Click to Start Editing">
+        <input type="button" onclick="startEdits()" value="Click the pins to read stories">
         <input type="button" onclick="stopEdits()" value="Stop Your Editing Session"><br>
         <div id="credits"><p>Github Leaflet Draw Collection Tool &copy;2015, Mike Foster and Raphael Dumas</p><p>Mental Health aWHEREness &copy;2019, Sandra Tabinas</p></div>
       </div>
     </div>
 
-    <div id="dialog" title="Tell us About this MH Service/Facility">     
+    <div id="dialog" title="Share your story">     
       <form>
         <fieldset style="border: none;">
           <ul style="list-style-type: none; padding-left: 0px">
             <li><label for="fname">Name</label></li>
-            <li><input type="text" name="fname" id="fname" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="notes">Notes/Recommendations</label></li>
-            <li><input type="text" name="notes" id="notes" placeholder="Notes/tips for others" class="text ui-widget-content ui-corner-all"></li>		  
+            <li><input type="text" name="fname" id="fname" placeholder="Your name (Optional)" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="notes">Yout Story</label></li>
+            <li><input type="text" name="notes" id="notes" placeholder="Share your story here" class="text ui-widget-content ui-corner-all"></li>		  
           </ul>
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
         </fieldset>
