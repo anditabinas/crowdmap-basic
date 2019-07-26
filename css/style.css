@@ -56,9 +56,9 @@ h1 {
 }
 
 #credits p {
-  margin-top: 1px;
+  margin-top: 5px;
   font-size: 8px;
   text-align: right;
-  line-height: 10px;
+  line-height: 4px;
   font: Helvetica;
 }
