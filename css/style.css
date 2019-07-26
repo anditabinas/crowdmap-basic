@@ -1,5 +1,9 @@
 @import url(//fonts.googleapis.com/css?family=Courgette);
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0px;
   font-family: 'Open Sans', Courgette, sans-serif;
@@ -7,6 +11,7 @@ body {
 
 img {
   float: left;
+  padding-left: 10px;
   padding-right: 10px;
 }
 
@@ -16,8 +21,8 @@ p {
 }
 
 h1 {
-  line-height: 60px;
-  margin-top: 0px;
+  line-height: 35px;
+  margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 0px;
   align: center;
@@ -25,20 +30,20 @@ h1 {
 }
 
 #wrapper {
-  width: 99%;
+  width: 100%;
 }
 
 #map {
-  width: 99%;
+  width: 100%;
   margin: 0 auto;
-  height: 780px;
-  text-align: center;
+  height: 800px;
 }
 
 #controls {
   width: 100%;
   margin: 0 auto;
   float: left;
+  text-align: center;
 }
 
 #form {
@@ -57,7 +62,7 @@ h1 {
 
 #credits p {
   margin-top: 5px;
-  font-size: 8px;
+  font-size: 10px;
   text-align: right;
   line-height: 4px;
   font: Helvetica;
