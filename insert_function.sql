@@ -3,7 +3,6 @@ DROP FUNCTION IF EXISTS insert_crowd_mapping_data(text,text,text);
 
 CREATE OR REPLACE FUNCTION insert_crowd_mapping_data (
     _geojson TEXT,
-    _address TEXT,
     _name TEXT,
     _notes TEXT)    
 --Has to return something in order to be used in a "SELECT" statement
@@ -19,9 +18,9 @@ BEGIN
 	
 
 	--Executes the insert given the supplied geometry, description, and username, while protecting against SQL injection.
-    EXECUTE ' INSERT INTO '||quote_ident(_the_table)||' (the_geom, address, name, notes)
-            VALUES ($1, $2, $3, $4)
-            ' USING _the_geom, _address, _name, _notes;
+    EXECUTE ' INSERT INTO '||quote_ident(_the_table)||' (the_geom, name, notes)
+            VALUES ($1, $2, $3)
+            ' USING _the_geom, _name, _notes;
             
     RETURN 1;
 END;
@@ -29,4 +28,4 @@ $$
 LANGUAGE plpgsql SECURITY DEFINER ;
 
 --Grant access to the public user
-GRANT EXECUTE ON FUNCTION insert_crowd_mapping_data( text, text, text, text) TO publicuser;
+GRANT EXECUTE ON FUNCTION insert_crowd_mapping_data( text, text, text) TO publicuser;
