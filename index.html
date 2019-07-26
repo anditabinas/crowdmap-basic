@@ -96,9 +96,6 @@
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
 						layer.bindPopup('<b>Name: </b>' + feature.properties.name + '<br>' + '<b>Story: </b>' + feature.properties.notes + '');
-						
-						//('' '<b>Name:</b>' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '<br> ' + feature.properties.notes + '');
-					}
 				}).addTo(map);
 			});
 		}
