@@ -1,247 +1,238 @@
 <!DOCTYPE html>
-<!--Initially based on https://github.com/radumas/crowdmap-basic and https://github.com/mjfoster83/web-map-workshop/blob/master/7_advancedMapping_CartoDB/index-completed.html-->
+<!--Based on https://github.com/mjfoster83/web-map-workshop/blob/master/7_advancedMapping_CartoDB/index-completed.html-->
 <html>
-<head>
-	<meta charset="utf-8" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-	<meta content="IE=edge" http-equiv="X-UA-Compatible">
-	<title>Mental Health aWHEREness: Point Collection Tool</title>
-	<link href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" rel="stylesheet">
-	<link href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" rel="stylesheet">
-	<link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet" type="text/css">
-	<link href="https://rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.css" rel="stylesheet">
-	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.67.0/dist/L.Control.Locate.min.css" rel="stylesheet">
-	<link href="https://rawgit.com/mapshakers/leaflet-control-window/master/src/L.Control.Window.css" rel="stylesheet">
-	<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
-<!--	<link rel="stylesheet" href="https://github.com/anditabinas/mhawhereness/blob/master/css/MarkerCluster.css" /> -->
-<!--	<link rel="stylesheet" href="https://github.com/anditabinas/mhawhereness/blob/master/leaflet-easy-button.css" /> -->
-<!--	<link rel="stylesheet" href="https://github.com/anditabinas/mhawhereness/blob/master/leaflet-tag-filter-button.css" /> -->
+  <head>
+    <title>Mental Health aWHEREness: Point Collection Tool</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.css"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+	  
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="header">
+        <h1>Mental Health aWHEREness</h1>
+      </div>
+      <div id="map"></div>
+      <div id="controls">
+        <p>Click points for more information, or add your own.</br></p>
+        <input type="button" onclick="startEdits()" value="Click to Start Editing">
+        <input type="button" onclick="stopEdits()" value="Stop Your Editing Session"><br>
+        <div id="credits"><p>Github Leaflet Draw Collection Tool &copy;2015, Mike Foster and Raphael Dumas</p><p>Mental Health aWHEREness &copy;2019, Sandra Tabinas</p></div>
+      </div>
+    </div>
 
+    <div id="dialog" title="Tell us About this MH Service/Facility">     
+      <form>
+        <fieldset style="border: none;">
+          <ul style="list-style-type: none; padding-left: 0px">
+            <li><label for="fname">Name</label></li>
+            <li><input type="text" name="fname" id="fname" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="doctor">Doctor</label></li>
+            <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>		  
+            <li><label for="address">Address</label></li>
+            <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="contactnum">Contact Number</label></li>
+            <li><input type="text" name="contactnum" id="contactnum" placeholder="Telephone or Mobile number to call" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="fee">Initial and Succeeding Fees</label></li>
+            <li><input type="text" name="fee" id="fee" placeholder="Separate by comma if succeeding fees are diff. from initial" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="website">Website or Other Details</label></li>
+            <li><input type="text" name="website" id="website" placeholder="Website, Social Media, other details" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="hours">Opening Hours</label></li>
+            <li><input type="text" name="hours" id="hours" placeholder="Opening Hours" class="text ui-widget-content ui-corner-all"></li>
+            <li><label for="notes">Notes/Recommendations</label></li>
+            <li><input type="text" name="notes" id="notes" placeholder="Notes/tips for others" class="text ui-widget-content ui-corner-all"></li>		  
+          </ul>
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+    </div>
 
-</head>
-<body>
-	<div id="wrapper">
-		<div id="header">
-			<h1>Mental Health aWHEREness</h1>
-		</div>
-		<div id="controls">
-			<b>Click points for more information, or add your own.</b> <input onclick="startEdits()" type="button" value="Click to Start Editing"> <input onclick="stopEdits()" type="button" value="Stop Your Editing Session"><br>
-		</div>
-		<div id="map"></div>
-		<div id="credits">
-			<p>Github Leaflet Draw Collection Tool &copy;2015, Mike Foster and Raphael Dumas</p>
-			<p>Mental Health aWHEREness &copy;2019, Sandra Tabinas</p>
-		</div>
-	</div>
-	<div id="dialog" title="MH Service/Facility Details">
-		<form>
-			<fieldset style="border: none;">
-				<ul style="list-style-type: none; padding-left: 0px">
-					<li><label for="fname">Name</label></li>
-					<li><input id="fname" name="fname" placeholder="Name of Service/Facility" size="40" type="text" required></li>
-					<li><label for="doctor">Doctor</label></li>
-					<li><textarea cols="40" id="doctor" name="doctor" placeholder="Who should we look for?" rows="5"></textarea></li>
-					<li><label for="address">Address</label></li>
-					<li><textarea cols="40" id="address" name="address" placeholder="Where can we find this?" rows="5"></textarea></li>
-					<li><label for="contactnum">Contact Number</label></li>
-					<li><input id="contactnum" name="contactnum" placeholder="Telephone or Mobile number to call" size="40" type="text" required></li>
-					<li><label for="fee">Initial and Succeeding Fees</label></li>
-					<li><input id="fee" name="fee" placeholder="Separate by comma if succeeding fees are diff. from initial" size="40" type="text"></li>
-					<li><label for="website">Website or Other Details</label></li>
-					<li><textarea cols="40" id="website" name="website" placeholder="Website, Social Media, other details" rows="5"></textarea></li>
-					<li><label for="hours">Opening Hours</label></li>
-					<li><input id="hours" name="hours" placeholder="Opening Hours" size="40" type="text"></li>
-					<li><label for="notes">Notes/Recommendations</label></li>
-					<li><textarea cols="40" id="notes" name="notes" placeholder="Notes/tips for others" rows="5"></textarea></li>
-				</ul><input style="position:absolute; top:-1000px" tabindex="-1" type="submit">
-			</fieldset>
-		</form>
-	</div>
-	<script src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"></script> 
-	<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> 
-	<script src="https://rawgit.com/k4r573n/leaflet-control-osm-geocoder/master/Control.OSMGeocoder.js"></script> 
-	<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
-	<script src="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></script> 
-	<script charset="utf-8" src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.67.0/dist/L.Control.Locate.min.js"></script> 
-	<script src="https://rawgit.com/mapshakers/leaflet-control-window/master/src/L.Control.Window.js"></script> 
-	<script src="https://github.com/anditabinas/mhawhereness/blob/master/leaflet.markercluster.js"></script>
-	<script src="https://github.com/anditabinas/mhawhereness/blob/master/leaflet-easy-button.js"></script>
-	<script src="https://github.com/anditabinas/mhawhereness/blob/master/leaflet-tag-filter-button.js"></script>
-	<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-	
-	
-	<script>
-
-	          var config = { //TODO: Change to your username, insert function on Carto, and Carto tablename
-	              cartoUsername: "anditabinas",
-	              cartoInsertFunction : "insert_crowd_mapping_data",
-	              cartoTablename: "mhloc",
-	              mapcenter: [12.51166, 122.08007],
-	              drawOptions: {
-	                  draw: {
-	                      polygon: false,
-	                      polyline: false,
-	                      rectangle: false,
-	                      circle: false,
-	                                  circlemarker: false,
-	                      marker: true                                    
-	                  },
-	                  edit: false,
-	                  remove: false
-	              }
-	          };         
-	          
-	          var cartoData = null; //These adds data from Carto using the SQL API, declares variables, and writes the SQL selection query
-	          var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website, hours, notes FROM " + config.cartoTablename;
-	          var map = L.map('map', {
-	              center: config.mapcenter,
-	              zoom: 6,			  
-	              fullscreenControl: true
-	          });				 
-			  map.addControl(new L.Control.Fullscreen());
-				 
-
-				  
-	          var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/cjy8p77s50mq91cmxkhhcw2uw/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
-	              attribution: '&copy; <a href="mapbox://styles/anditabinas/cjy8p77s50mq91cmxkhhcw2uw">Mapbox<\/a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<\/a> contributors',
-	              subdomains: 'abcd',
-	              maxZoom: 19 //Adds the tilelayer basemap; I used my mapbox style here.
-	          }); 
-	          Mapbox.addTo(map);
-	          
-	          var osmGeocoder = new L.Control.OSMGeocoder({position: 'topleft'}); //Adds Search toolbar; OSMGeocoder       
-	          map.addControl(osmGeocoder);
-	          
-	          var lc = L.control.locate({  //Adds Locate Control; to locate the user's location on the map
-	                  position: 'topleft',
-	              icon: 'fa fa-hand-o-down'
-	          });     
-	          map.addControl(lc);			          	         
-	         
-	          var getData = "https://" + config.cartoUsername + ".carto.com/api/v2/sql?format=GeoJSON&q=" + sqlQuery; //Fetches data input on the carto database
-	          function getGeoJSON() {
-	              $.getJSON(getData, function (data) {
-	                  cartoData = L.geoJson(data, {
-	                      onEachFeature: function (feature, layer) {
-	                          layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>Doctor: <\/b>' + feature.properties.doctor + '<br>' + '<b>Address: <\/b>' + feature.properties.address + '<br>' + '<b>Contact Number: <\/b>' + feature.properties.contactnum + '<br>' + '<b>Fees (Initial/Succeeding): <\/b>' + feature.properties.fee + '<br>' + '<b>Website: <\/b>' + feature.properties.website + '<br>' + '<b>Opening Hours: <\/b>' + feature.properties.hours + '<br>' + '<b>Notes/Recommendations: <\/b>' + feature.properties.notes + '');
-	                      }           
-	                  }).addTo(map);
-	              });
-	          }
-	          getGeoJSON();
-	          var drawnItems = new L.FeatureGroup();
-	          var drawControl = new L.Control.Draw(config.drawOptions);
-	          var controlOnMap = false;
-	          function startEdits() {
-	              if (controlOnMap === true) {
-	                  map.removeControl(drawControl);
-	                  controlOnMap = false;
-	              }
-	              map.addControl(drawControl);
-	              controlOnMap = true;
-	          }
-	          function stopEdits() {
-	              map.removeControl(drawControl);
-	              controlOnMap = false;
-	          }
-	          map.on(L.Draw.Event.CREATED, function (e) {
-	              var layer = e.layer;
-	              map.addLayer(drawnItems);
-	              drawnItems.addLayer(layer);		  
-	              dialog.dialog("open");	      		  			  
-	          });
-	          					
+    <script src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"
+      integrity="sha384-Lh7SNUss9JoImCvc96eCUnLX3HvY4kb0UZCWZbYWvceJ+o5CJeOJqqNoheaGkNHT"
+      crossorigin=""></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.12/leaflet.draw.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+    
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+		//TODO: Change to your username, insert function on Carto, and Carto tablename
+		var config = {
+			cartoUsername : "anditabinas",
+			cartoInsertFunction : "insert_crowd_mapping_data",
+			cartoTablename : "mhloc",
+			mapcenter: [12.51166, 122.08007],
+			drawOptions: {
+				draw : {
+					polygon : false,
+					polyline : false,
+					rectangle : false,
+					/*Circles aren't supported by the GeoJSON spec, so won't get sent to the database properly. 
+					*http://stackoverflow.com/a/16944309/4047679
+					*/
+					circle : false,
+                    circlemarker : false,
+					marker: true
+				},
+				edit : false,
+				remove: false
+			}
+		};
+		// Add Data from Carto using the SQL API
+		// Declare Variables
+		// Create Global Variable to hold Carto points
+		var cartoData = null;
+		// Write SQL Selection Query to be Used on Carto Table
+		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website, hours, notes FROM " + config.cartoTablename;
+		// Create Leaflet map object
+		var map = L.map('map', { center: config.mapcenter, zoom: 6});
+		// Add Tile Layer basemap
+		// Find your own at https://leaflet-extras.github.io/leaflet-providers/preview/
+		var CartoDB_Positron = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		});
+		CartoDB_Positron.addTo(map);	    
+	    
+		//Fetches
+		var getData = "https://" + config.cartoUsername + ".carto.com/api/v2/sql?format=GeoJSON&q=" + sqlQuery;
+		function getGeoJSON() {
+			$.getJSON(getData, function (data) {
+				cartoData = L.geoJson(data, {
+					onEachFeature: function (feature, layer) {
+						layer.bindPopup('<b>Name: </b>' + feature.properties.name + '<br>' + '<b>Doctor: </b>' + feature.properties.doctor + '<br>' + '<b>Address: </b>' + feature.properties.address + '<br>' + '<b>Contact Number: </b>' + feature.properties.contactnum + '<br>' + '<b>Fees (Initial/Succeeding): </b>' + feature.properties.fee + '<br>' + '<b>Website: </b>' + feature.properties.website + '<br>' + '<b>Opening Hours: </b>' + feature.properties.hours + '<br>' + '<b>Notes/Recommendations: </b>' + feature.properties.notes + '');
+						
+						//('' '<b>Name:</b>' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '<br> ' + feature.properties.notes + '');
+					}
+				}).addTo(map);
+			});
+		}
+		getGeoJSON();
+		var drawnItems = new L.FeatureGroup();
+		var drawControl = new L.Control.Draw(config.drawOptions);
+		var controlOnMap = false;
+		function startEdits() {
+			if (controlOnMap === true) {
+				map.removeControl(drawControl);
+				controlOnMap = false;
+			}
+			map.addControl(drawControl);
+			controlOnMap = true;
+		}
+		function stopEdits() {
+			map.removeControl(drawControl);
+			controlOnMap = false;
+		}
+		map.on(L.Draw.Event.CREATED, function (e) {
+	        var layer = e.layer;
+			map.addLayer(drawnItems);
+			drawnItems.addLayer(layer);
+			dialog.dialog("open");
+		});
 		
-	          var dialog = $("#dialog").dialog({
-	              autoOpen: false,
-	              height: 500,
-	              width: 360,
-	              modal: true,
-	              position: {
-	                  my: "center center",
-	                  at: "center center",
-	                  of: "#map"
-	              },
-	              buttons: {
-	                  "Add to Database": setData,
-	                  Cancel: function () {
-	                      dialog.dialog("close");
-	                      refreshLayer();             
-	                  }
-	              },
-	              close: function () {
-	                  form[0].reset();
-	                  refreshLayer();
-	                  console.log("Dialog closed");
-	              }
-	          });
-	          
-	          form = dialog.find("form").on("submit", function (event) {
-	              event.preventDefault();
-	              setData();
-	          });
-	          function setData() {
-	              var enteredFname = "'" + fname.value + "'",
-	                  enteredAddress = "'" + address.value + "'",
-	                  enteredDoctor = "'" + doctor.value + "'",
-	                  enteredContactnum = "'" + contactnum.value + "'",
-	                  enteredFee = "'" + fee.value + "'",
-	                  enteredWebsite = "'" + website.value + "'",
-	                  enteredHours = "'" + hours.value + "'",
-	                  enteredNotes = "'" + notes.value + "'";             
-	              drawnItems.eachLayer(function (layer) {
-	                  var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",   //Converts the drawing to a GeoJSON
-	                      sql = "SELECT " + config.cartoInsertFunction + "("; //Constructs the SQL Query from the entered parameters on the dialog/form
-	                  sql += drawing;
-	                  sql += "," + enteredAddress;
-	                  sql += "," + enteredFname;
-	                  sql += "," + enteredDoctor;
-	                  sql += "," + enteredContactnum;
-	                  sql += "," + enteredFee;
-	                  sql += "," + enteredWebsite;
-	                  sql += "," + enteredHours;
-	                  sql += "," + enteredNotes;              
-	                  sql += ");";
-	                  console.log(drawing);
-	                  
-	                  $.ajax({
-	                      type: 'POST',
-	                      url: 'https://' + config.cartoUsername + '.carto.com/api/v2/sql', //Sending the data to Carto
-	                      crossDomain: true,
-	                      data: {"q": sql},
-	                      dataType: 'json',
-	                      success: function (responseData, textStatus, jqXHR) {
-	                          console.log("Data saved");
-	                      },
-	                      error: function (responseData, textStatus, errorThrown) {
-	                          console.log("Problem saving the data");
-	                      }
-	                  });
-	                  var newData = layer.toGeoJSON();
-	                    newData.properties.address = address.value;
-	                    newData.properties.name = fname.value;
-	                    newData.properties.doctor = doctor.value;
-	                    newData.properties.contactnum = contactnum.value;
-	                    newData.properties.fee = fee.value;
-	                    newData.properties.website = website.value;
-	                    newData.properties.hours = hours.value;
-	                    newData.properties.notes = notes.value;                   
-	                  cartoData.addData(newData);
-	              });
-	              
-	              dialog.dialog("close");
-	          }
-	          function refreshLayer() {
-	              console.log("drawnItems has been cleared");
-	              map.removeLayer(drawnItems);
-	              drawnItems = new L.FeatureGroup();
-	          }
-	          
-	          
-	          
-	          
-	</script>
-</body>
+		var dialog = $("#dialog").dialog({
+			autoOpen: false,
+			height: 300,
+			width: 350,
+			modal: true,
+			position: {
+				my: "center center",
+				at: "center center",
+				of: "#map"
+			},
+			buttons: {
+				"Add to Database": setData,
+				Cancel: function () {
+					dialog.dialog("close");
+					refreshLayer();				
+				}
+			},
+			close: function () {
+				form[0].reset();
+				refreshLayer();
+				console.log("Dialog closed");
+			}
+		});
+		form = dialog.find("form").on("submit", function (event) {
+			event.preventDefault();
+			setData();
+		});
+		function setData() {
+			var enteredFname = "'" + fname.value + "'",
+				enteredAddress = "'" + address.value + "'",
+				enteredDoctor = "'" + doctor.value + "'",
+				enteredContactnum = "'" + contactnum.value + "'",
+				enteredFee = "'" + fee.value + "'",
+				enteredWebsite = "'" + website.value + "'",
+				enteredHours = "'" + hours.value + "'",
+				enteredNotes = "'" + notes.value + "'";				
+			drawnItems.eachLayer(function (layer) {
+			//Convert the drawing to a GeoJSON to pass to the Carto sql database
+				var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'",
+				  //Construct the SQL query to insert data from the three parameters: the drawing, the input username, and the input description of the drawn shape
+					sql = "SELECT " + config.cartoInsertFunction + "(";
+				sql += drawing;
+				sql += "," + enteredAddress;
+				sql += "," + enteredFname;
+				sql += "," + enteredDoctor;
+				sql += "," + enteredContactnum;
+				sql += "," + enteredFee;
+				sql += "," + enteredWebsite;
+				sql += "," + enteredHours;
+				sql += "," + enteredNotes;				
+				sql += ");";
+				console.log(drawing);
+				//Sending the data
+				$.ajax({
+					type: 'POST',
+					url: 'https://' + config.cartoUsername + '.carto.com/api/v2/sql',
+					crossDomain: true,
+					data: {"q": sql},
+					dataType: 'json',
+					success: function (responseData, textStatus, jqXHR) {
+						console.log("Data saved");
+					},
+					error: function (responseData, textStatus, errorThrown) {
+						console.log("Problem saving the data");
+					}
+				});
+				/* 
+				* Transfer submitted drawing to the Carto layer, this results in the user's data appearing on the map without
+				* requerying the database (see the refreshLayer() function for an alternate way of doing this) 
+				*/
+				var newData = layer.toGeoJSON();
+				  newData.properties.address = address.value;
+				  newData.properties.name = fname.value;
+				  newData.properties.doctor = doctor.value;
+				  newData.properties.contactnum = contactnum.value;
+				  newData.properties.fee = fee.value;
+				  newData.properties.website = website.value;
+				  newData.properties.hours = hours.value;
+				  newData.properties.notes = notes.value;					
+				cartoData.addData(newData);
+			});
+			
+			dialog.dialog("close");
+		}
+		function refreshLayer() {
+			console.log("drawnItems has been cleared");
+			map.removeLayer(drawnItems);
+			drawnItems = new L.FeatureGroup();
+		/* 
+			This would refresh the data-layer to include new data from the Carto table after each drawing is submitted. 
+		*/
+		//      if (map.hasLayer(cartoData)) {
+		//        map.removeLayer(cartoData);
+		//      };
+		//      getGeoJSON();
+		}
+    </script>
+  </body>
 </html>
