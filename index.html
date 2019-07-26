@@ -31,18 +31,6 @@
           <ul style="list-style-type: none; padding-left: 0px">
             <li><label for="fname">Name</label></li>
             <li><input type="text" name="fname" id="fname" placeholder="Name of Service/Facility" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="doctor">Doctor</label></li>
-            <li><input type="text" name="doctor" id="doctor" placeholder="Who should we look for?" class="text ui-widget-content ui-corner-all"></li>		  
-            <li><label for="address">Address</label></li>
-            <li><input type="text" name="address" id="address" placeholder="Where can we find this?" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="contactnum">Contact Number</label></li>
-            <li><input type="text" name="contactnum" id="contactnum" placeholder="Telephone or Mobile number to call" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="fee">Initial and Succeeding Fees</label></li>
-            <li><input type="text" name="fee" id="fee" placeholder="Separate by comma if succeeding fees are diff. from initial" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="website">Website or Other Details</label></li>
-            <li><input type="text" name="website" id="website" placeholder="Website, Social Media, other details" class="text ui-widget-content ui-corner-all"></li>
-            <li><label for="hours">Opening Hours</label></li>
-            <li><input type="text" name="hours" id="hours" placeholder="Opening Hours" class="text ui-widget-content ui-corner-all"></li>
             <li><label for="notes">Notes/Recommendations</label></li>
             <li><input type="text" name="notes" id="notes" placeholder="Notes/tips for others" class="text ui-widget-content ui-corner-all"></li>		  
           </ul>
@@ -86,7 +74,7 @@
 		// Create Global Variable to hold Carto points
 		var cartoData = null;
 		// Write SQL Selection Query to be Used on Carto Table
-		var sqlQuery = "SELECT the_geom, address, name, doctor, contactnum, fee, website, hours, notes FROM " + config.cartoTablename;
+		var sqlQuery = "SELECT the_geom, name, notes FROM " + config.cartoTablename;
 		// Create Leaflet map object
 		var map = L.map('map', { center: config.mapcenter, zoom: 6});
 		// Add Tile Layer basemap
@@ -104,7 +92,7 @@
 			$.getJSON(getData, function (data) {
 				cartoData = L.geoJson(data, {
 					onEachFeature: function (feature, layer) {
-						layer.bindPopup('<b>Name: </b>' + feature.properties.name + '<br>' + '<b>Doctor: </b>' + feature.properties.doctor + '<br>' + '<b>Address: </b>' + feature.properties.address + '<br>' + '<b>Contact Number: </b>' + feature.properties.contactnum + '<br>' + '<b>Fees (Initial/Succeeding): </b>' + feature.properties.fee + '<br>' + '<b>Website: </b>' + feature.properties.website + '<br>' + '<b>Opening Hours: </b>' + feature.properties.hours + '<br>' + '<b>Notes/Recommendations: </b>' + feature.properties.notes + '');
+						layer.bindPopup('<b>Name: </b>' + feature.properties.name + '<b>Notes/Recommendations: </b>' + feature.properties.notes + '');
 						
 						//('' '<b>Name:</b>' + feature.properties.name + '<br> ' + feature.properties.doctor +  '<br> ' + feature.properties.address + '<br> ' + feature.properties.contactnum + '<br> ' + feature.properties.fee + '<br> ' + feature.properties.website + '<br> ' + feature.properties.hours + '<br> ' + feature.properties.notes + '');
 					}
@@ -163,12 +151,6 @@
 		});
 		function setData() {
 			var enteredFname = "'" + fname.value + "'",
-				enteredAddress = "'" + address.value + "'",
-				enteredDoctor = "'" + doctor.value + "'",
-				enteredContactnum = "'" + contactnum.value + "'",
-				enteredFee = "'" + fee.value + "'",
-				enteredWebsite = "'" + website.value + "'",
-				enteredHours = "'" + hours.value + "'",
 				enteredNotes = "'" + notes.value + "'";				
 			drawnItems.eachLayer(function (layer) {
 			//Convert the drawing to a GeoJSON to pass to the Carto sql database
@@ -176,13 +158,7 @@
 				  //Construct the SQL query to insert data from the three parameters: the drawing, the input username, and the input description of the drawn shape
 					sql = "SELECT " + config.cartoInsertFunction + "(";
 				sql += drawing;
-				sql += "," + enteredAddress;
 				sql += "," + enteredFname;
-				sql += "," + enteredDoctor;
-				sql += "," + enteredContactnum;
-				sql += "," + enteredFee;
-				sql += "," + enteredWebsite;
-				sql += "," + enteredHours;
 				sql += "," + enteredNotes;				
 				sql += ");";
 				console.log(drawing);
@@ -205,13 +181,7 @@
 				* requerying the database (see the refreshLayer() function for an alternate way of doing this) 
 				*/
 				var newData = layer.toGeoJSON();
-				  newData.properties.address = address.value;
 				  newData.properties.name = fname.value;
-				  newData.properties.doctor = doctor.value;
-				  newData.properties.contactnum = contactnum.value;
-				  newData.properties.fee = fee.value;
-				  newData.properties.website = website.value;
-				  newData.properties.hours = hours.value;
 				  newData.properties.notes = notes.value;					
 				cartoData.addData(newData);
 			});
