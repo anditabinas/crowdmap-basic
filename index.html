@@ -82,7 +82,7 @@
 		// Write SQL Selection Query to be Used on Carto Table
 		var sqlQuery = "SELECT the_geom, name, notes FROM " + config.cartoTablename;
 		// Create Leaflet map object
-	          var map = L.map('map', { center: config.mapcenter, zoom: 5});   // Creates the Leaflet map object
+	          var map = L.map('map', { center: config.mapcenter, zoom: 3});   // Creates the Leaflet map object
 		// Add Tile Layer basemap
 		// Find your own at https://leaflet-extras.github.io/leaflet-providers/preview/
 		var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/ck03nnkkh4v8d1crz876lulzo/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
