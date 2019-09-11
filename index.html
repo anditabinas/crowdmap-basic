@@ -120,7 +120,7 @@
                 $.getJSON(getData, function(data) {
                     cartoData = L.geoJson(data, {
                         onEachFeature: function(feature, layer) {
-                            layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>Here: <\/b>' + feature.properties.notes + '');
+                            layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>My Story: <\/b>' + feature.properties.notes + '');
                         }
                     }).addTo(map);
                 });
