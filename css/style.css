@@ -39,6 +39,16 @@ h2 {
   font-weight: lighter;
 }
 
+h3 {
+  line-height: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 10px;
+  color: #3086B5;
+  font-weight: lighter;
+}
+
 #wrapper {
   width: 100%;
 }
