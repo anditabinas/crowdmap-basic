@@ -26,13 +26,13 @@
 
     <body oncontextmenu="return false">
         <div id="wrapper">
-            <div id="header">
-                <h1>Mapping Emotions</h1>
-                <h2>Our stories matter. <p>Let our stories of challenges and triumphs on mental illness become instruments to raise mental health awareness and provide hope and encouragement to others who are struggling with their mental health. Sharing our stories could also help break down the stigma around mental health problems and educate people about mental health. Truthfully, there should be no shame in talking about mental health and our struggles. IT IS important to talk about it and let people know that no matter how young or old, how rich or poor, or WHEREver they are, they are not alone in their battles. <p>We also encourage those who have loved ones who have struggled/still struggling with depression, anxiety, or other mental health problems to share how they have supported these people that they care about during these times. <p>Just a reminder though, please be cautious in sharing your stories if they may be triggering to others. Put trigger warnings if necessary.</h2>
+            <div id="header">                
+                <h1>Hear; Here</h1>
+                <h2>Our stories matter. <p>Let our stories of challenges and triumphs on mental illness become instruments to raise mental health awareness and provide hope and encouragement to others who are struggling with their mental health. Sharing our stories could also help break down the stigma around mental health problems and educate people about mental health. Truthfully, there should be no shame in talking about mental health and our struggles. IT IS important to talk about it and let people know that no matter how young or old, how rich or poor, or WHEREver they are, they are not alone in their battles. <p>We also encourage those who have loved ones who have struggled/still struggling with depression, anxiety, or other mental health problems to share how they have supported these people that they care about during these times. <p>Just a reminder though, please be cautious in sharing your stories if they may be triggering to others. Put trigger warnings if necessary.</a></h2>
             </div>
             <div id="controls">
-                <input onclick="startEdits()" type="button" value="Click to share your story.">
-                <input onclick="stopEdits()" type="button" value="Know that you're not alone.">
+                <input onclick="startEdits()" type="button" value="Listen.">
+                <input onclick="stopEdits()" type="button" value="Or talk to someone.">
             </div>
             <div id="map"></div>
             <div id="credits">
@@ -44,10 +44,10 @@
             <form>
                 <fieldset style="border: none;">
                     <ul style="list-style-type: none; padding-left: 0px">
-                        <li><label for="fname">Nickame</label></li>
-                        <li><input id="fname" name="fname" placeholder="Your name (Optional)" size="40" type="text" required></li> 
+                        <li><label for="nickname">Nickame</label></li>
+                        <li><input id="nickname" name="nickname" placeholder="Your nickname" size="40" type="text" required></li> 
                         <li><label for="notes">Your Story</label></li>
-                        <li><textarea cols="40" id="notes" name="notes" placeholder="Share your story here."></textarea></li>
+                        <li><textarea cols="40" id="notes" name="notes" placeholder="Share your story here." rows="5"></textarea></li>
                     </ul>
                     <input style="position:absolute; top:-1000px" tabindex="-1" type="submit">
                 </fieldset>
@@ -98,7 +98,6 @@
 
             var Mapbox = L.tileLayer('https://api.mapbox.com/styles/v1/anditabinas/ck03pb9a81b241cmenhhktqto/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYW5kaXRhYmluYXMiLCJhIjoiY2plejI3aHp3MDV3MjMzcW9ydXl2bHNmZiJ9.9h6j7BbkM-PUtK0zaZ1iUg', {
                 attribution: '&copy; <a href="mapbox://styles/anditabinas/ck03pb9a81b241cmenhhktqto">Mapbox<\/a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap<\/a> contributors',
-                subdomains: 'abcd',
                 maxZoom: 20 //Adds the tilelayer basemap; I used my mapbox style here.
             });
             Mapbox.addTo(map);
@@ -119,7 +118,7 @@
                 $.getJSON(getData, function(data) {
                     cartoData = L.geoJson(data, {
                         onEachFeature: function(feature, layer) {
-                            layer.bindPopup('<b>Name: <\/b>' + feature.properties.name + '<br>' + '<b>My Story: <\/b>' + feature.properties.notes + '');
+                            layer.bindPopup('<b>Nickname: <\/b>' + feature.properties.name + '<br>' + '<b>My Story: <\/b>' + feature.properties.notes + '');
                         }
                     }).addTo(map);
                 });
@@ -160,7 +159,7 @@
                     of: "#map"
                 },
                 buttons: {
-                    "Share": setData,
+                    "Hear.": setData,
                     Cancel: function() {
                         dialog.dialog("close");
                         refreshLayer();
@@ -179,15 +178,14 @@
             });
 
             function setData() {
-	            var enteredFname = "'" + JSON.stringify(fname.value.replace("'", "''")) + "'"
- 	            var enteredNotes = "'" + JSON.stringify(notes.value.replace("'", "''")) + "'";
-                
-                
+      			var enteredNickname = "'" + JSON.stringify(nickname.value.replace("'", "''")) + "'"                          
+      			var enteredNotes = "'" + JSON.stringify(notes.value.replace("'", "''")) + "'";                      
+
                 drawnItems.eachLayer(function(layer) {
                     var drawing = "'" + JSON.stringify(layer.toGeoJSON().geometry) + "'", //Converts the drawing to a GeoJSON
                         sql = "SELECT " + config.cartoInsertFunction + "("; //Constructs the SQL Query from the entered parameters on the dialog/form
                     sql += drawing;
-                    sql += "," + enteredFname;
+                    sql += "," + enteredNickname;
                     sql += "," + enteredNotes;
                     sql += ");";
                     console.log(drawing);
@@ -208,7 +206,7 @@
                         }
                     });
                     var newData = layer.toGeoJSON();
-                    newData.properties.name = fname.value;
+                    newData.properties.name = nickname.value;
                     newData.properties.notes = notes.value;
                     cartoData.addData(newData);
                 });
